@@ -22,6 +22,24 @@ const authenticationToken = async (req,resizeBy, next) =>{
         //verify token
         const decode = jwt.verify(token, process.env.JWT_SECRET)
         
-        // get 
+        // get  user from database
+
+        const user = await User.findById(decoded.userId).select("-password");
+
+        if(!user){
+            return res.status(401).json({
+                success:false,
+                message: "invalid token - user not found"
+            })
+        }
+
+        if(!user.isActive){
+            return res.status(401).json({
+                success: false,
+                message:'Account is deactivated'
+            })
+        }
+
+        // add user to request object 
     }
 }
