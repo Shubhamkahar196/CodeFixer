@@ -11,5 +11,17 @@ const authenticationToken = async (req,resizeBy, next) =>{
         //get token from header
         const authHeader = req.headers['authorization'];
         const token = authHeader && authHeader.split(' ')[1];  //Bearer Token
+
+        if(!token){
+            return res.status(401).json({
+                success: false,
+                message: 'Access token is required'
+            });
+        }
+
+        //verify token
+        const decode = jwt.verify(token, process.env.JWT_SECRET)
+        
+        // get 
     }
 }
